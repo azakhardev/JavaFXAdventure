@@ -1,8 +1,9 @@
 module cz.vse.adventurefx {
     requires javafx.controls;
     requires javafx.fxml;
+    requires javafx.graphics;
 
 
-    opens cz.vse.adventurefx to javafx.fxml;
-    exports cz.vse.adventurefx;
+    exports cz.vse.adventurefx.main;
+    opens cz.vse.adventurefx.main to javafx.fxml;
 }
