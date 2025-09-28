@@ -227,7 +227,7 @@ public class Room {
         return Collections.unmodifiableCollection(exits);
     }
 
-    public void addEntity(Prop prop) {
-
+    public String toString() {
+        return this.name;
     }
 }

@@ -6,8 +6,12 @@ import cz.vse.adventurefx.logic.entities.Obstacle;
 import cz.vse.adventurefx.logic.entities.Prop;
 import cz.vse.adventurefx.logic.items.Item;
 import cz.vse.adventurefx.logic.items.ItemFactory;
+import cz.vse.adventurefx.main.Observable;
+import cz.vse.adventurefx.main.Observer;
 
+import java.util.HashSet;
 import java.util.Scanner;
+import java.util.Set;
 import java.util.function.Function;
 
 /**
@@ -21,7 +25,9 @@ import java.util.function.Function;
  * @author Artem Zacharčenko
  * @version pro školní rok 2024/2025
  */
-public class GamePlan {
+public class GamePlan implements Observable {
+
+    private Set<Observer> observersList = new HashSet<>();
 
     private Room currentRoom;
 
@@ -381,5 +387,15 @@ public class GamePlan {
      */
     public void setCurrentRoom(Room room) {
         this.currentRoom = room;
+        notifyObservers();
+    }
+
+    @Override
+    public void addObserver(Observer observer) {
+        observersList.add(observer);
+    }
+
+    public void notifyObservers() {
+        observersList.forEach(Observer::update);
     }
 }

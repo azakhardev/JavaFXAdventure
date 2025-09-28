@@ -2,16 +2,22 @@ package cz.vse.adventurefx.main;
 
 import cz.vse.adventurefx.logic.Game;
 import cz.vse.adventurefx.logic.IGame;
+import cz.vse.adventurefx.logic.Room;
 import javafx.application.Platform;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 
 import java.util.Optional;
 
-public class MainController {
+public class MainController implements Observer {
     @FXML
-    public TextArea outputField;
+    private TextArea outputField;
+
+    @FXML
+    private ListView exitsPanel;
 
     @FXML
     private Button sendButton;
@@ -21,10 +27,21 @@ public class MainController {
 
     private IGame game = new Game();
 
+    private ObservableList<Room> exitRooms = FXCollections.observableArrayList();
+
     @FXML
     private void initialize() {
         outputField.appendText(game.getGreeting() + "\n");
         Platform.runLater(() -> inputField.requestFocus());
+        exitsPanel.setItems(exitRooms);
+        updateExitsList();
+        game.getGamePlan().addObserver(this);
+    }
+
+    @FXML
+    private void updateExitsList (){
+        exitRooms.clear();
+        exitRooms.addAll(game.getGamePlan().getCurrentRoom().getExits());
     }
 
     @FXML
@@ -65,5 +82,10 @@ public class MainController {
             this.game = new Game();
 
         }
+    }
+
+    @Override
+    public void update() {
+        updateExitsList();
     }
 }
