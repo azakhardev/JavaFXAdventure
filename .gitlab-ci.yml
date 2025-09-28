@@ -2,7 +2,7 @@ image: maven:3.8-openjdk-17
 
 build:
   script:
-      - "mvn javafx:jlink -8"
+      - "mvn javafx:jlink -B"
   artifacts:
     paths:
       - "target/*.zip"
