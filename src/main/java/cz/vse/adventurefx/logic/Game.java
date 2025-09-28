@@ -3,6 +3,10 @@ package cz.vse.adventurefx.logic;
 import cz.vse.adventurefx.logic.commands.*;
 import cz.vse.adventurefx.logic.entities.Player;
 import cz.vse.adventurefx.logic.items.Backpack;
+import cz.vse.adventurefx.main.GameChange;
+import cz.vse.adventurefx.main.Observer;
+
+import java.util.*;
 
 /**
  * Třída Hra - třída představující logiku adventury.
@@ -21,7 +25,7 @@ public class Game implements IGame {
     private GamePlan gamePlan;
     private boolean gameEnd = false;
     private Player player;
-
+    private Map<GameChange, Set<Observer>> observersList = new HashMap<>();
     /**
      * Vytváří hru a inicializuje místnosti (prostřednictvím třídy HerniPlan) a seznam platných příkazů.
      */
@@ -43,6 +47,10 @@ public class Game implements IGame {
         validCommands.insertCommand(new CommandDrop(gamePlan, player.getBackpack()));
         validCommands.insertCommand(new CommandInspect(player.getBackpack()));
         validCommands.insertCommand(new CommandCombine(player.getBackpack()));
+
+        for (GameChange gameChange : GameChange.values()) {
+            observersList.put(gameChange, new HashSet<>());
+        }
     }
 
     /**
@@ -122,6 +130,7 @@ public class Game implements IGame {
      */
     public void setGameEnd(boolean gameEnd) {
         this.gameEnd = gameEnd;
+        notifyObservers(GameChange.GAME_END);
     }
 
     /**
@@ -132,6 +141,15 @@ public class Game implements IGame {
      */
     public GamePlan getGamePlan() {
         return gamePlan;
+    }
+
+    @Override
+    public void addObserver(GameChange gameChange, Observer observer) {
+        observersList.get(gameChange).add(observer);
+    }
+
+    public void notifyObservers(GameChange gameChange) {
+        observersList.get(gameChange).forEach(Observer::update);
     }
 
 }

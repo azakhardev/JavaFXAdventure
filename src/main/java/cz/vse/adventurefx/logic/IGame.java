@@ -3,13 +3,15 @@
 package cz.vse.adventurefx.logic;
 
 
+import cz.vse.adventurefx.main.Observable;
+
 /**
  * Rozhraní které musí implementovat hra, je na ně navázáno uživatelské rozhraní
  *
  * @author Michael Kolling, Lubos Pavlicek, Jarmila Pavlickova
  * @version pro školní rok 2016/2017
  */
-public interface IGame {
+public interface IGame extends Observable {
     //== VEŘEJNÉ KONSTANTY =====================================================
     //== DEKLAROVANÉ METODY ====================================================
 

@@ -1,7 +1,10 @@
 package cz.vse.adventurefx.logic.commands;
 
 import cz.vse.adventurefx.logic.GamePlan;
+import cz.vse.adventurefx.logic.Password;
 import cz.vse.adventurefx.logic.entities.Prop;
+
+import java.util.Objects;
 
 /**
  * Třída představuje příkaz "interact", který umožňuje hráči
@@ -30,6 +33,18 @@ public class CommandInteract implements ICommand {
      */
     @Override
     public String executeCommand(String... params) {
+
+        if(params.length > 1 && Objects.equals(params[0], "keypad")) {
+            if(Objects.equals(params[1], "")){
+                return "Enter correct password after the word keypad";
+            }
+            if(Objects.equals(params[1], Password.password)){
+                plan.getCurrentRoom().getObstacles().remove("vault_door");
+                return "The keypad beeps in approval. Heavy mechanisms shift behind the steel as the vault door unlocks with a deep, resonant thud. You are finally free from this long forgotten maze...";
+            }
+            return "Wrong password.";
+        }
+
         if (params.length != 1) {
             return "You need to specify with which object you want to interact. Usage: interact <entity_name>";
         }

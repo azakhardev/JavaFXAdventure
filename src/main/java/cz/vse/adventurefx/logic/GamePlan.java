@@ -6,12 +6,11 @@ import cz.vse.adventurefx.logic.entities.Obstacle;
 import cz.vse.adventurefx.logic.entities.Prop;
 import cz.vse.adventurefx.logic.items.Item;
 import cz.vse.adventurefx.logic.items.ItemFactory;
+import cz.vse.adventurefx.main.GameChange;
 import cz.vse.adventurefx.main.Observable;
 import cz.vse.adventurefx.main.Observer;
 
-import java.util.HashSet;
-import java.util.Scanner;
-import java.util.Set;
+import java.util.*;
 import java.util.function.Function;
 
 /**
@@ -27,15 +26,19 @@ import java.util.function.Function;
  */
 public class GamePlan implements Observable {
 
-    private Set<Observer> observersList = new HashSet<>();
+    private Map<GameChange, Set<Observer>> observersList = new HashMap<>();
 
     private Room currentRoom;
 
+    private Integer collectedNotes = 0;
     /**
      * Konstruktor, který při inicializaci spustí funkci pro nastavení místností.
      */
     public GamePlan() {
         setupRooms();
+        for (GameChange gameChange : GameChange.values()) {
+            observersList.put(gameChange, new HashSet<>());
+        }
     }
 
     /**
@@ -226,17 +229,9 @@ public class GamePlan implements Observable {
             return "You open it and find several intact rounds.";
         });
 
-        Prop keypad = new Prop("keypad", "A grimy keypad, scratched and worn from years of use. Faint fingerprints linger on the most pressed buttons.", () -> {
-            System.out.println("Please, enter the code:");
-
-            Scanner scanner = new Scanner(System.in);
-            if (scanner.nextLine().equals(Password.password)) {
-                administration.getObstacles().remove("vault_door");
-                return "The keypad beeps in approval. Heavy mechanisms shift behind the steel as the vault door unlocks with a deep, resonant thud. You are finally free from this long forgotten maze...";
-            }
-
-            return "The password is wrong.";
-        });
+        Prop keypad = new Prop("keypad", "A grimy keypad, scratched and worn from years of use. Faint fingerprints linger on the most pressed buttons.", () ->
+             "Use command interact keypad <password> to enter a password."
+        );
         Prop folders = new Prop("folder_stack", "A bundle of dusty folders, stamped repeatedly with a faded 'TOP SECRET' mark.", () -> "You sift through the brittle papers — fragments about Facility X surface, but the text is too degraded to fully decipher.");
 
         Obstacle fuseBox = new Obstacle("fuse_box",
@@ -387,15 +382,15 @@ public class GamePlan implements Observable {
      */
     public void setCurrentRoom(Room room) {
         this.currentRoom = room;
-        notifyObservers();
+        notifyObservers(GameChange.ROOM_CHANGE);
     }
 
     @Override
-    public void addObserver(Observer observer) {
-        observersList.add(observer);
+    public void addObserver(GameChange gameChange, Observer observer) {
+        observersList.get(gameChange).add(observer);
     }
 
-    public void notifyObservers() {
-        observersList.forEach(Observer::update);
+    public void notifyObservers(GameChange gameChange) {
+        observersList.get(gameChange).forEach(Observer::update);
     }
 }

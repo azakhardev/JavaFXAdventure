@@ -12,7 +12,7 @@ import cz.vse.adventurefx.logic.entities.Obstacle;
  * @version pro školní rok 2016/2017
  */
 public class CommandGo implements ICommand {
-    private static final String NAME = "go";
+    public static final String NAME = "go";
     private GamePlan plan;
 
     /**

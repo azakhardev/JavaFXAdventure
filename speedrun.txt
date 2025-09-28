@@ -1,0 +1,87 @@
+pick needle
+go kitchen
+go storage
+pick fuse
+go office
+interact skeleton
+pick cloth
+combine cloth needle
+go storage
+interact box
+pick screwdriver
+go kitchen
+use fuse fuse_box
+interact oven_drawer
+pick matches
+go hallway
+use screwdriver loose_panel
+go greenhouse
+drop matches
+drop screwdriver
+pick shovel
+use shovel loose_soil
+drop shovel
+pick bottle
+pick matches
+go outpost
+go lab
+pick jouranal_page2
+use bottle chemical_tank
+go armory
+pick dynamite
+combine dynamite matches
+go lab
+go outpost
+use primed_explosive fallen_rocks
+go shaft
+interact emergency_hatch
+pick crowbar
+go outpost
+go greenhouse
+use crowbar stuck_door
+drop crowbar
+go outpost
+interact toolbox
+pick tape
+go greenhouse
+pick screwdriver
+go engine_room
+use screwdriver wall_panel
+drop screwdriver
+pick wire_cutters
+go greenhouse
+go hallway
+use wire_cutters panel_cables
+drop wire_cutters
+pick broken_cable
+combine tape broken_cable
+go greenhouse
+go engine_room
+use sheathed_cable opened_panel
+go greenhouse
+go hallway
+go kitchen
+pick key
+go barrack
+use key locker
+pick journal_page1
+go kitchen
+go hallway
+go greenhouse
+go outpost
+go lab
+pick journal_page2
+pick acid_bottle
+go outpost
+use acid_bottle overgrown_plants
+go catacombs
+pick catacombs_note
+go outpost
+go greenhouse
+go engine_room
+go server_room
+interact server
+go administration
+inspect journal_page1
+inspect journal_page2
+inspect catacombs_note
