@@ -12,7 +12,7 @@ import java.util.Objects;
  */
 public class CommandInteract implements ICommand {
 
-    private static final String NAME = "interact";
+    public static final String NAME = "interact";
     public GamePlan plan;
 
     /**

@@ -9,12 +9,15 @@
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
 
-<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cz.vse.adventurefx.main.MainController">
+<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cz.vse.adventurefx.main.MainController">
     <columnConstraints>
         <ColumnConstraints hgrow="SOMETIMES" />
     </columnConstraints>
@@ -51,15 +54,38 @@
                         <Insets />
                     </HBox.margin>
                 </Button>
+                <Button fx:id="minimapButton" mnemonicParsing="false" onAction="#openMinimap" text="Map">
+                    <padding>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                    </padding>
+                    <HBox.margin>
+                        <Insets />
+                    </HBox.margin>
+                </Button>
             </children>
             <padding>
                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
             </padding>
         </HBox>
-      <SplitPane dividerPositions="0.3" GridPane.rowIndex="1">
+      <SplitPane dividerPositions="0.5333889816360601" GridPane.rowIndex="1">
          <items>
-            <ListView onMouseClicked="#clickExitsPanel" fx:id="exitsPanel" />
-              <TextArea fx:id="outputField" editable="false">
+            <VBox prefHeight="200.0" prefWidth="100.0">
+               <children>
+                  <Pane VBox.vgrow="ALWAYS">
+                     <children>
+                        <ImageView fitHeight="486.0" fitWidth="636.0" pickOnBounds="true" preserveRatio="true" />
+                     </children>
+                  </Pane>
+                  <HBox prefHeight="150.0">
+                     <children>
+                        <ListView fx:id="exitsPanel" onMouseClicked="#clickExitsPanel" />
+                        <ListView fx:id="propsPanel" onMouseClicked="#clickPropsPanel" />
+                        <ListView fx:id="itemsPanel" onMouseClicked="#clickItemsPanel" />
+                     </children>
+                  </HBox>
+               </children>
+            </VBox>
+              <TextArea fx:id="outputField" editable="false" prefHeight="606.0" prefWidth="675.0">
                   <padding>
                       <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                   </padding>

@@ -10,7 +10,7 @@ import cz.vse.adventurefx.logic.items.Item;
  */
 public class CommandPick implements ICommand {
 
-    private static final String NAME = "pick";
+    public static final String NAME = "pick";
 
     private GamePlan gamePlan;
     private Backpack backpack;

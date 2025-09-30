@@ -4,13 +4,22 @@ import cz.vse.adventurefx.logic.Game;
 import cz.vse.adventurefx.logic.IGame;
 import cz.vse.adventurefx.logic.Room;
 import cz.vse.adventurefx.logic.commands.CommandGo;
+import cz.vse.adventurefx.logic.commands.CommandInteract;
+import cz.vse.adventurefx.logic.commands.CommandPick;
+import cz.vse.adventurefx.logic.entities.Prop;
+import cz.vse.adventurefx.logic.items.Item;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 
 import java.io.*;
 import java.util.Optional;
@@ -23,7 +32,16 @@ public class MainController {
     private ListView<Room> exitsPanel;
 
     @FXML
+    private ListView<Prop> propsPanel;
+
+    @FXML
+    private ListView<Item> itemsPanel;
+
+    @FXML
     private Button sendButton;
+
+    @FXML
+    private Button minimapButton;
 
     @FXML
     private TextField inputField;
@@ -32,14 +50,44 @@ public class MainController {
 
     private ObservableList<Room> exitRooms = FXCollections.observableArrayList();
 
+    private ObservableList<Prop> props = FXCollections.observableArrayList();
+
+    private ObservableList<Item> items = FXCollections.observableArrayList();
+
     @FXML
     private void initialize() {
         outputField.appendText(game.getGreeting() + "\n");
         Platform.runLater(() -> inputField.requestFocus());
         exitsPanel.setItems(exitRooms);
+        propsPanel.setItems(props);
+        itemsPanel.setItems(items);
         updateExitsList();
-        game.addObserver(GameChange.GAME_END, this::updateExitsList);
-        game.getGamePlan().addObserver(GameChange.ROOM_CHANGE, this::updateGameEnd);
+        updatePropsList();
+        updateItemsList();
+        game.getGamePlan().addObserver(GameChange.ROOM_CHANGE, this::updateExitsList);
+        game.getGamePlan().addObserver(GameChange.ROOM_CHANGE, this::updatePropsList);
+        game.getGamePlan().addObserver(GameChange.ROOM_CHANGE, this::updateItemsList);
+        game.addObserver(GameChange.GAME_END, this::updateGameEnd);
+
+        setCellsOutput();
+    }
+
+    private void setCellsOutput(){
+        propsPanel.setCellFactory(param -> new ListCell<Prop>() {
+            @Override
+            protected void updateItem(Prop prop, boolean empty) {
+                super.updateItem(prop, empty);
+                setText(empty || prop == null ? null : prop.getName());
+            }
+        });
+
+        itemsPanel.setCellFactory(param -> new ListCell<Item>() {
+            @Override
+            protected void updateItem(Item item, boolean empty) {
+                super.updateItem(item, empty);
+                setText(empty || item == null ? null : item.getName());
+            }
+        });
     }
 
     @FXML
@@ -48,12 +96,25 @@ public class MainController {
         exitRooms.addAll(game.getGamePlan().getCurrentRoom().getExits());
     }
 
+    @FXML
+    private void updatePropsList() {
+        props.clear();
+        props.addAll(game.getGamePlan().getCurrentRoom().getProps().values());
+    }
+
+    @FXML
+    private void updateItemsList() {
+        items.clear();
+        items.addAll(game.getGamePlan().getCurrentRoom().getItems().values());
+    }
+
     private void updateGameEnd() {
         if (game.isGameEnded()) {
             outputField.appendText(game.getEpilogue());
         }
         inputField.setDisable(game.isGameEnded());
         sendButton.setDisable(game.isGameEnded());
+        minimapButton.setDisable(game.isGameEnded());
         exitsPanel.setDisable(game.isGameEnded());
     }
 
@@ -66,6 +127,22 @@ public class MainController {
             playFromFile("speedrun.txt");
         }
         processCommand(command);
+    }
+
+    @FXML
+    private void openMinimap() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("minimap.fxml"));
+            Parent root = loader.load();
+
+            Stage stage = new Stage();
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.setTitle("Minimap");
+            stage.setScene(new Scene(root));
+            stage.showAndWait();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void closeGame(ActionEvent actionEvent) {
@@ -91,7 +168,6 @@ public class MainController {
         }
     }
 
-
     @FXML
     public void clickExitsPanel(MouseEvent mouseEvent) {
         Room exit = exitsPanel.getSelectionModel().getSelectedItem();
@@ -99,6 +175,27 @@ public class MainController {
             String command = CommandGo.NAME + " " + exit;
             processCommand(command);
         }
+    }
+
+    @FXML
+    private void clickPropsPanel(MouseEvent mouseEvent) {
+        Prop prop = propsPanel.getSelectionModel().getSelectedItem();
+        if (prop != null) {
+            String command = CommandInteract.NAME + " " + prop.getName();
+            processCommand(command);
+        }
+        updatePropsList();
+        updateItemsList();
+    }
+
+    @FXML
+    private void clickItemsPanel(MouseEvent mouseEvent) {
+        Item item = itemsPanel.getSelectionModel().getSelectedItem();
+        if (item != null) {
+            String command = CommandPick.NAME + " " + item.getName();
+            processCommand(command);
+        }
+        updateItemsList();
     }
 
     private void processCommand(String command) {
