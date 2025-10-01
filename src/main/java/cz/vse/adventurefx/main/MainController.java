@@ -100,6 +100,7 @@ public class MainController {
     private void updatePropsList() {
         props.clear();
         props.addAll(game.getGamePlan().getCurrentRoom().getProps().values());
+        props.addAll(game.getGamePlan().getCurrentRoom().getObstacles().values());
     }
 
     @FXML
@@ -133,15 +134,20 @@ public class MainController {
     private void openMinimap() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("minimap.fxml"));
+
             Parent root = loader.load();
+
+            MinimapController minimapController = loader.getController();
+            minimapController.setGame(game);
 
             Stage stage = new Stage();
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.setTitle("Minimap");
             stage.setScene(new Scene(root));
+            stage.setResizable(false);
             stage.showAndWait();
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
 

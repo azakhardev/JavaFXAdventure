@@ -4,15 +4,17 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.Pane?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="375.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cz.vse.adventurefx.main.MinimapController">
-   <children>
-      <ImageView fx:id="minimap" fitHeight="480.0" fitWidth="640.0" layoutY="6.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@images/Minimap.png" />
-         </image></ImageView>
-      <ImageView fx:id="playerPin" fitHeight="64.0" fitWidth="64.0" layoutX="278.0" layoutY="207.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@images/MapPin.png" />
-         </image></ImageView>
-   </children>
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="368.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cz.vse.adventurefx.main.MinimapController">
+    <children>
+        <ImageView fx:id="minimap" fitHeight="480.0" fitWidth="640.0" layoutY="6.0" pickOnBounds="true" preserveRatio="true">
+            <image>
+                <Image url="@images/Minimap.png" />
+            </image>
+        </ImageView>
+        <ImageView fx:id="playerPin" fitHeight="42.0" fitWidth="42.0" layoutX="37.0" layoutY="79.0" pickOnBounds="true" preserveRatio="true">
+            <image>
+                <Image url="@images/MapPin.png" />
+            </image>
+        </ImageView>
+    </children>
 </Pane>
