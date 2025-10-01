@@ -71,16 +71,16 @@
          <items>
             <VBox prefHeight="200.0" prefWidth="100.0">
                <children>
-                  <Pane VBox.vgrow="ALWAYS">
+                  <Pane fx:id="imagePane" VBox.vgrow="ALWAYS">
                      <children>
-                        <ImageView fitHeight="486.0" fitWidth="636.0" pickOnBounds="true" preserveRatio="true" />
+                        <ImageView fx:id="roomImage" pickOnBounds="true" />
                      </children>
                   </Pane>
-                  <HBox prefHeight="150.0">
+                  <HBox prefHeight="150.0" HBox.hgrow="ALWAYS">
                      <children>
-                        <ListView fx:id="exitsPanel" onMouseClicked="#clickExitsPanel" />
-                        <ListView fx:id="propsPanel" onMouseClicked="#clickPropsPanel" />
-                        <ListView fx:id="itemsPanel" onMouseClicked="#clickItemsPanel" />
+                        <ListView fx:id="exitsPanel" onMouseClicked="#clickExitsPanel" HBox.hgrow="ALWAYS" />
+                        <ListView fx:id="propsPanel" onMouseClicked="#clickPropsPanel" HBox.hgrow="ALWAYS" />
+                        <ListView fx:id="itemsPanel" onMouseClicked="#clickItemsPanel" HBox.hgrow="ALWAYS" />
                      </children>
                   </HBox>
                </children>

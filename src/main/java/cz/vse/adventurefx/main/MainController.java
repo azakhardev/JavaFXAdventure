@@ -17,7 +17,10 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -38,13 +41,19 @@ public class MainController {
     private ListView<Item> itemsPanel;
 
     @FXML
+    private TextField inputField;
+
+    @FXML
     private Button sendButton;
 
     @FXML
     private Button minimapButton;
 
     @FXML
-    private TextField inputField;
+    private Pane imagePane;
+
+    @FXML
+    public ImageView roomImage;
 
     private IGame game = new Game();
 
@@ -57,22 +66,29 @@ public class MainController {
     @FXML
     private void initialize() {
         outputField.appendText(game.getGreeting() + "\n");
+
         Platform.runLater(() -> inputField.requestFocus());
+
         exitsPanel.setItems(exitRooms);
         propsPanel.setItems(props);
         itemsPanel.setItems(items);
+
         updateExitsList();
         updatePropsList();
         updateItemsList();
+
         game.getGamePlan().addObserver(GameChange.ROOM_CHANGE, this::updateExitsList);
         game.getGamePlan().addObserver(GameChange.ROOM_CHANGE, this::updatePropsList);
         game.getGamePlan().addObserver(GameChange.ROOM_CHANGE, this::updateItemsList);
         game.addObserver(GameChange.GAME_END, this::updateGameEnd);
 
+        roomImage.fitWidthProperty().bind(imagePane.widthProperty());
+        roomImage.fitHeightProperty().bind(imagePane.heightProperty());
+
         setCellsOutput();
     }
 
-    private void setCellsOutput(){
+    private void setCellsOutput() {
         propsPanel.setCellFactory(param -> new ListCell<Prop>() {
             @Override
             protected void updateItem(Prop prop, boolean empty) {
@@ -94,6 +110,8 @@ public class MainController {
     private void updateExitsList() {
         exitRooms.clear();
         exitRooms.addAll(game.getGamePlan().getCurrentRoom().getExits());
+        roomImage.setImage(
+                new Image(getClass().getResource("/cz/vse/adventurefx/main/images/" + game.getGamePlan().getCurrentRoom().getName() + ".png").toExternalForm()));
     }
 
     @FXML
@@ -209,6 +227,8 @@ public class MainController {
 
         String result = game.processCommand(command);
         outputField.appendText(result + "\n\n");
+        updatePropsList();
+        updateItemsList();
     }
 
     public void playFromFile(String nazevSouboru) {
