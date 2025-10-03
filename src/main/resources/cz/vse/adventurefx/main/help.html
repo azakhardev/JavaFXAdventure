@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="cs">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>GUIDEBOOK — Textová adventura</title>
+    <style>
+        :root{
+            --bg:#0f1724; --card:#0b1220; --muted:#9aa4b2; --accent:#8b5cf6; --glass: rgba(255,255,255,0.03);
+            --mono: 'Courier New', monospace; --radius:12px;
+            color-scheme: dark;
+        }
+        html,body{height:100%;}
+        body{
+            margin:0; font-family:Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+            background: linear-gradient(180deg, #071025 0%, #05101b 100%);
+            color:#e6eef8; -webkit-font-smoothing:antialiased; padding:32px;
+            display:flex; justify-content:center; align-items:flex-start;
+        }
+        .container{width:100%; max-width:980px;}
+        .card{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+            border-radius:var(--radius); padding:28px; box-shadow:0 6px 30px rgba(2,6,23,0.6); border:1px solid rgba(255,255,255,0.03);}
+        header{display:flex; gap:18px; align-items:center; margin-bottom:18px}
+        .logo{width:64px;height:64px;border-radius:12px;background:linear-gradient(135deg,var(--accent),#06b6d4);display:flex;align-items:center;justify-content:center;font-weight:700}
+        h1{margin:0;font-size:20px}
+        p.lead{margin:6px 0 0;color:var(--muted)}
+        h2{margin-top:20px;font-size:16px}
+        hr{border:none;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.03),transparent);margin:16px 0}
+        table{width:100%;border-collapse:collapse;margin-top:8px}
+        th,td{padding:10px 12px;text-align:left;border-radius:6px}
+        thead th{color:#dbeafe;font-weight:600;background:linear-gradient(90deg,rgba(255,255,255,0.02),transparent)}
+        tbody tr{border-top:1px dashed rgba(255,255,255,0.02)}
+        code, .cmd{font-family:var(--mono);background:var(--glass);padding:4px 6px;border-radius:6px}
+        ul{margin:8px 0 12px 20px}
+        .note{background:linear-gradient(180deg, rgba(255,255,255,0.012), rgba(255,255,255,0.006));padding:12px;border-radius:10px;border:1px solid rgba(255,255,255,0.02);color:var(--muted)}
+        .controls{display:flex;gap:10px;margin-top:14px}
+        button{background:transparent;border:1px solid rgba(255,255,255,0.06);padding:8px 12px;border-radius:10px;color:inherit;cursor:pointer}
+        button.primary{background:linear-gradient(90deg,var(--accent),#06b6d4);color:#021124;border:none}
+        footer{margin-top:18px;color:var(--muted);font-size:13px}
+        pre{background:#071129;padding:12px;border-radius:8px;overflow:auto;color:#c7e3ff}
+        @media (max-width:640px){body{padding:18px}.card{padding:18px}}
+    </style>
+</head>
+<body>
+<main class="container">
+    <article class="card">
+        <header>
+            <div class="logo">🎮</div>
+            <div>
+                <h1>GUIDEBOOK.md — Textová adventura</h1>
+                <p class="lead">Krátký průvodce pravidly, příkazy a doporučeními pro hraní textové adventury.</p>
+            </div>
+        </header>
+
+        <section>
+            <h2>🕹️ O hře</h2>
+            <p>Tato textová adventura vás zavede do opuštěného komplexu, kde musíte přežít, hledat předměty a rozplétat tajemství,
+                která se skrývají v temnotě. Svět je plný zamčených dveří, porouchaných mechanismů, a stop zanechaných předchozími
+                obyvateli.</p>
+            <p><strong>Vaším cílem</strong> je dostat se z komplexu — a možná cestou zjistit, co se zde vlastně stalo.</p>
+        </section>
+
+        <hr />
+
+        <section>
+            <h2>🎯 Cíl hry</h2>
+            <p>Hráč se probouzí v neznámém prostředí a nemá žádné vybavení. Musí prozkoumávat okolí, sbírat a používat předměty, číst
+                poznámky a dokumenty a řešit "hádanky", které odemykají další části herního světa.</p>
+        </section>
+
+        <hr />
+
+        <section>
+            <h2>💬 Příkazy</h2>
+            <p>Hra se ovládá pomocí textových příkazů zadávaných do konzole. Základní dostupné příkazy:</p>
+
+            <table>
+                <thead>
+                <tr><th>Příkaz</th><th>Popis</th></tr>
+                </thead>
+                <tbody>
+                <tr><td><code class="cmd">look_around</code></td><td>Popíše aktuální místnost a její obsah.</td></tr>
+                <tr><td><code class="cmd">inventory</code></td><td>Vypíše seznam předmětů v inventáři.</td></tr>
+                <tr><td><code class="cmd">go [místnost]</code></td><td>Přesune hráče do jiné místnosti (např. <code>go kitchen</code>).</td></tr>
+                <tr><td><code class="cmd">pick [předmět]</code></td><td>Vezme předmět z místnosti (např. <code>pick fuse</code>).</td></tr>
+                <tr><td><code class="cmd">drop [předmět]</code></td><td>Položí předmět z inventáře do místnosti.</td></tr>
+                <tr><td><code class="cmd">use [předmět] [objekt]</code></td><td>Pokusí se použít předmět na nějaký objekt v místnosti.</td></tr>
+                <tr><td><code class="cmd">interact [objekt]</code></td><td>Hráč se pokusí nějak interagovat s objekty v místnosti.</td></tr>
+                <tr><td><code class="cmd">help</code></td><td>Zobrazí nápovědu k příkazům.</td></tr>
+                <tr><td><code class="cmd">combine [item] [item]</code></td><td>Pokusí se zkombinovat dva itemy.</td></tr>
+                <tr><td><code class="cmd">description [objekt?]</code></td><td>Popíše aktuální místnost nebo objekt v místnosti.</td></tr>
+                <tr><td><code class="cmd">inspect [item]</code></td><td>Popíše předmět z inventáře hráče.</td></tr>
+                <tr><td><code class="cmd">end</code></td><td>Ukončí hru.</td></tr>
+                </tbody>
+            </table>
+        </section>
+
+        <hr />
+
+        <section>
+            <h2>📦 Předměty</h2>
+            <p>Předměty ve hře mají různé objemy a funkce. Některé lze použít na konkrétních místech, jiné slouží jako klíče k hádankám
+                nebo dokumenty s nápovědou.</p>
+            <p>Např.:</p>
+            <ul>
+                <li><strong>fuse</strong> – obnova elektřiny</li>
+                <li><strong>key</strong> – odemykání zamčených objektů</li>
+                <li><strong>journal_page1</strong> – obsahuje část hesla</li>
+            </ul>
+        </section>
+
+        <hr />
+
+        <section>
+            <h2>🧠 Hádanky</h2>
+            <p>Ve hře se objevují logické překážky, např. zničené dveře, zamčené skříně, nebo potřeba obnovit elektrické připojení.
+                Řešení těchto situací závisí na:</p>
+            <ul>
+                <li>správné kombinaci předmětů</li>
+                <li>čtení dokumentů, které obsahují části přístupového kódu (např. z <code>Password.password</code>)</li>
+                <li>postupu ve správném pořadí</li>
+            </ul>
+        </section>
+
+        <hr />
+
+        <section>
+            <h2>🛠️ Doporučení pro hraní</h2>
+            <div class="note">
+                <ul>
+                    <li>Důkladně čtěte texty, které hra vypisuje.</li>
+                    <li>Pečlivě spravujte inventář – některé předměty mají vyšší objem.</li>
+                    <li>Před použitím předmětu se nejprve rozhlédněte pomocí <code>look_around</code>.</li>
+                    <li>Všímejte si čísel v poznámkách – mohou být součástí hesla.</li>
+                    <li>Používejte <code>help</code>, pokud si nevíte rady s ovládáním.</li>
+                </ul>
+            </div>
+        </section>
+    </article>
+</main>
+
+</body>
+</html>

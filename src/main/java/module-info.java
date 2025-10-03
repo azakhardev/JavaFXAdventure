@@ -1,8 +1,6 @@
 module cz.vse.adventurefx {
-    requires javafx.controls;
     requires javafx.fxml;
-    requires javafx.graphics;
-    requires java.desktop;
+    requires javafx.web;
 
 
     exports cz.vse.adventurefx.main;

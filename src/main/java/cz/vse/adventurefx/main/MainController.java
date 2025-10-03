@@ -21,6 +21,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
+import javafx.scene.web.WebView;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -247,5 +248,19 @@ public class MainController {
         } catch (IOException e) {
             System.out.println("Nelze hrát hru ze souboru, něco se pokazilo: " + e.getMessage());
         }
+    }
+
+    @FXML
+    private void openHelp(ActionEvent actionEvent) {
+        Stage helpStage = new Stage();
+        WebView wv = new WebView();
+
+        Scene helpScene = new Scene(wv);
+        helpStage.setTitle("Help");
+
+        helpStage.setScene(helpScene);
+        helpStage.show();
+
+        wv.getEngine().load(getClass().getResource("help.html").toExternalForm());
     }
 }

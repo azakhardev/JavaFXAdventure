@@ -32,9 +32,10 @@
                 <Menu mnemonicParsing="false" text="Game">
                     <items>
                         <MenuItem mnemonicParsing="false" onAction="#newGame" text="New" />
-                    </items>
-                    <items>
                         <MenuItem mnemonicParsing="false" onAction="#closeGame" text="Close" />
+                        <MenuItem mnemonicParsing="false" onAction="#openHelp" text="Help" />
+
+
                     </items>
                 </Menu>
             </menus>
