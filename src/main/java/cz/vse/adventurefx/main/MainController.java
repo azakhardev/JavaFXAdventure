@@ -187,9 +187,8 @@ public class MainController {
 
         if (result.isPresent() && result.get() == ButtonType.OK) {
             outputField.clear();
-            outputField.appendText(game.getGreeting() + "\n");
             this.game = new Game();
-            exitsPanel.setDisable(true);
+            initialize();
         }
     }
 

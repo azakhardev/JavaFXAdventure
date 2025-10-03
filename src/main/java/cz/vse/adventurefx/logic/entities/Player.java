@@ -29,6 +29,8 @@ public class Player {
         if (instance == null) {
             instance = new Player(backpack);
         }
+
+        instance.setBackpack(backpack);
         return instance;
     }
 
