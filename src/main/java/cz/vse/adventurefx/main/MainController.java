@@ -28,6 +28,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.*;
+import java.util.Objects;
 import java.util.Optional;
 
 public class MainController {
@@ -138,6 +139,8 @@ public class MainController {
         sendButton.setDisable(game.isGameEnded());
         minimapButton.setDisable(game.isGameEnded());
         exitsPanel.setDisable(game.isGameEnded());
+        propsPanel.setDisable(game.isGameEnded());
+        itemsPanel.setDisable(game.isGameEnded());
     }
 
     @FXML
@@ -189,6 +192,7 @@ public class MainController {
             outputField.clear();
             this.game = new Game();
             initialize();
+            updateGameEnd();
         }
     }
 
@@ -207,10 +211,10 @@ public class MainController {
         if (prop != null) {
             String command;
             Item selectedItem = Player.getInstance().getBackpack().getSelectedItem();
-            if(selectedItem != null) {
-                command = CommandUse.NAME + " "+ selectedItem.getName() + " " + prop.getName();
+            if (selectedItem != null) {
+                command = CommandUse.NAME + " " + selectedItem.getName() + " " + prop.getName();
                 Player.getInstance().getBackpack().setSelectedItem(null);
-            }else{
+            } else {
                 command = CommandInteract.NAME + " " + prop.getName();
             }
 
@@ -250,6 +254,6 @@ public class MainController {
         helpStage.setScene(helpScene);
         helpStage.show();
 
-        wv.getEngine().load(getClass().getResource("help.html").toExternalForm());
+        wv.getEngine().load(Objects.requireNonNull(getClass().getResource("help.html")).toExternalForm());
     }
 }

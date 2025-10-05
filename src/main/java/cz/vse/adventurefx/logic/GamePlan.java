@@ -9,6 +9,8 @@ import cz.vse.adventurefx.logic.items.ItemFactory;
 import cz.vse.adventurefx.main.GameChange;
 import cz.vse.adventurefx.main.Observable;
 import cz.vse.adventurefx.main.Observer;
+import javafx.scene.control.Alert;
+import javafx.scene.control.TextInputDialog;
 
 import java.util.*;
 import java.util.function.Function;
@@ -229,8 +231,28 @@ public class GamePlan implements Observable {
             return "You open it and find several intact rounds.";
         });
 
-        Prop keypad = new Prop("keypad", "A grimy keypad, scratched and worn from years of use. Faint fingerprints linger on the most pressed buttons.", () ->
-             "Use command interact keypad <password> to enter a password."
+        Prop keypad = new Prop("keypad", "A grimy keypad, scratched and worn from years of use. Faint fingerprints linger on the most pressed buttons.", () -> {
+            TextInputDialog dialog = new TextInputDialog();
+            dialog.setTitle("Keypad Access");
+            dialog.setHeaderText("Enter the 8-digit password:");
+            dialog.setContentText("Password:");
+
+            Optional<String> result = dialog.showAndWait();
+
+            if (result.isPresent()) {
+                String password = result.get().trim();
+
+                if (password.equals(Password.password)) {
+                    administration.removeObstacle("vault_door");
+                    return "The keypad beeps and the door unlocks!";
+                } else {
+                    return "Incorrect password. Try again.";
+                }
+            } else {
+                return "You decided not to enter a password.";
+            }
+        }
+
         );
         Prop folders = new Prop("folder_stack", "A bundle of dusty folders, stamped repeatedly with a faded 'TOP SECRET' mark.", () -> "You sift through the brittle papers — fragments about Facility X surface, but the text is too degraded to fully decipher.");
 

@@ -61,6 +61,7 @@ public class MinimapController {
         roomsCoordinates.put("engine_room", new Point2D(336, 188));
         roomsCoordinates.put("server_room", new Point2D(254, 196));
         roomsCoordinates.put("administration", new Point2D(250, 256));
+        roomsCoordinates.put("exit", new Point2D(250, 280));
     }
 
     private void loadInventory() {
