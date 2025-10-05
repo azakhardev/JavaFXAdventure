@@ -6,6 +6,8 @@ import cz.vse.adventurefx.logic.Room;
 import cz.vse.adventurefx.logic.commands.CommandGo;
 import cz.vse.adventurefx.logic.commands.CommandInteract;
 import cz.vse.adventurefx.logic.commands.CommandPick;
+import cz.vse.adventurefx.logic.commands.CommandUse;
+import cz.vse.adventurefx.logic.entities.Player;
 import cz.vse.adventurefx.logic.entities.Prop;
 import cz.vse.adventurefx.logic.items.Item;
 import javafx.application.Platform;
@@ -143,9 +145,6 @@ public class MainController {
         String command = inputField.getText();
         inputField.clear();
 
-        if (command.equals("speedrun")) {
-            playFromFile("speedrun.txt");
-        }
         processCommand(command);
     }
 
@@ -158,6 +157,7 @@ public class MainController {
 
             MinimapController minimapController = loader.getController();
             minimapController.setGame(game);
+            minimapController.setMainController(this);
 
             Stage stage = new Stage();
             stage.initModality(Modality.APPLICATION_MODAL);
@@ -205,7 +205,15 @@ public class MainController {
     private void clickPropsPanel(MouseEvent mouseEvent) {
         Prop prop = propsPanel.getSelectionModel().getSelectedItem();
         if (prop != null) {
-            String command = CommandInteract.NAME + " " + prop.getName();
+            String command;
+            Item selectedItem = Player.getInstance().getBackpack().getSelectedItem();
+            if(selectedItem != null) {
+                command = CommandUse.NAME + " "+ selectedItem.getName() + " " + prop.getName();
+                Player.getInstance().getBackpack().setSelectedItem(null);
+            }else{
+                command = CommandInteract.NAME + " " + prop.getName();
+            }
+
             processCommand(command);
         }
         updatePropsList();
@@ -222,31 +230,13 @@ public class MainController {
         updateItemsList();
     }
 
-    private void processCommand(String command) {
+    public void processCommand(String command) {
         outputField.appendText("> " + command + "\n");
 
         String result = game.processCommand(command);
         outputField.appendText(result + "\n\n");
         updatePropsList();
         updateItemsList();
-    }
-
-    public void playFromFile(String nazevSouboru) {
-        try (
-                BufferedReader cteni = new BufferedReader(new FileReader(nazevSouboru));
-        ) {
-            System.out.println(game.getGreeting());
-
-            for (String radek = cteni.readLine(); radek != null && !game.isGameEnded(); radek = cteni.readLine()) {
-                processCommand(radek);
-            }
-
-        } catch (FileNotFoundException e) {
-            File file = new File(nazevSouboru);
-            System.out.println("Soubor nebyl nalezen!\nProhledávaná cesta byla: " + file.getAbsolutePath());
-        } catch (IOException e) {
-            System.out.println("Nelze hrát hru ze souboru, něco se pokazilo: " + e.getMessage());
-        }
     }
 
     @FXML

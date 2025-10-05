@@ -11,7 +11,7 @@ import java.util.Arrays;
  */
 public class CommandCombine implements ICommand {
 
-    private final static String NAME = "combine";
+    public final static String NAME = "combine";
     private final Backpack backpack;
 
     /**

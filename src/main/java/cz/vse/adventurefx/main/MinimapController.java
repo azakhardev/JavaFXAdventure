@@ -1,6 +1,10 @@
 package cz.vse.adventurefx.main;
 
 import cz.vse.adventurefx.logic.IGame;
+import cz.vse.adventurefx.logic.Room;
+import cz.vse.adventurefx.logic.commands.CommandCombine;
+import cz.vse.adventurefx.logic.commands.CommandDrop;
+import cz.vse.adventurefx.logic.commands.CommandGo;
 import cz.vse.adventurefx.logic.entities.Player;
 import cz.vse.adventurefx.logic.items.Item;
 import javafx.collections.FXCollections;
@@ -8,22 +12,25 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Point2D;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListCell;
-import javafx.scene.control.ListView;
+import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
+import javafx.stage.Stage;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class MinimapController {
     private IGame game;
 
+    private MainController mainController;
+
     @FXML
     private ImageView playerPin;
 
     @FXML
-    private ListView<Item> invenotryPanel;
+    private ListView<Item> inventoryPanel;
 
     private ObservableList<Item> items = FXCollections.observableArrayList();
 
@@ -39,6 +46,7 @@ public class MinimapController {
 
     private void insertCoordinates() {
         loadInventory();
+        inventoryPanel.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
         roomsCoordinates.put("barrack", new Point2D(36, 80));
         roomsCoordinates.put("kitchen", new Point2D(112, 104));
         roomsCoordinates.put("storage", new Point2D(100, 164));
@@ -56,7 +64,7 @@ public class MinimapController {
     }
 
     private void loadInventory() {
-        invenotryPanel.setCellFactory(param -> new ListCell<Item>() {
+        inventoryPanel.setCellFactory(param -> new ListCell<Item>() {
             @Override
             protected void updateItem(Item item, boolean empty) {
                 super.updateItem(item, empty);
@@ -65,7 +73,7 @@ public class MinimapController {
         });
 
         items.addAll(Player.getInstance().getBackpack().getItems());
-        invenotryPanel.setItems(items);
+        inventoryPanel.setItems(items);
         inventorySpace.setText(String.valueOf(
                 Player.getInstance().getBackpack().getCapacity()
                         - Player.getInstance().getBackpack().getUsedCapacity()
@@ -77,6 +85,10 @@ public class MinimapController {
         updatePlayerPosition();
     }
 
+    public void setMainController(MainController mainController) {
+        this.mainController = mainController;
+    }
+
     private void updatePlayerPosition() {
         Point2D point = roomsCoordinates.get(game.getGamePlan().getCurrentRoom().getName());
 
@@ -85,14 +97,53 @@ public class MinimapController {
     }
 
     @FXML
+    private void clickInventoryPanel(MouseEvent mouseEvent) {
+        if (mouseEvent.getClickCount() == 2) {
+            Item clickedItem = inventoryPanel.getSelectionModel().getSelectedItem();
+            if (clickedItem != null) {
+                Alert alert = new Alert(Alert.AlertType.NONE, clickedItem.getDescription(), ButtonType.OK);
+                alert.setTitle("Description of " + clickedItem.getName());
+                alert.showAndWait();
+            }
+        }
+    }
+
+    @FXML
     private void useItem(ActionEvent actionEvent) {
+        Item selected = inventoryPanel.getSelectionModel().getSelectedItem();
+
+        if (selected == null) {
+            return;
+        }
+
+        Player.getInstance().getBackpack().setSelectedItem(selected);
+
+        ((Stage) inventoryPanel.getScene().getWindow()).close();
     }
 
     @FXML
     private void dropItem(ActionEvent actionEvent) {
+        Item selected = inventoryPanel.getSelectionModel().getSelectedItem();
+
+        if (selected == null) {
+            return;
+        }
+
+        mainController.processCommand(CommandDrop.NAME + " " + selected.getName());
+
+        ((Stage) inventoryPanel.getScene().getWindow()).close();
     }
 
     @FXML
     private void combineItems(ActionEvent actionEvent) {
+        List<Item> selectedItems = inventoryPanel.getSelectionModel().getSelectedItems();
+
+        if (selectedItems.size() != 2) {
+            return;
+        }
+
+        mainController.processCommand(CommandCombine.NAME + " " + selectedItems.get(0).getName() + " " + selectedItems.get(1).getName());
+
+        ((Stage) inventoryPanel.getScene().getWindow()).close();
     }
 }

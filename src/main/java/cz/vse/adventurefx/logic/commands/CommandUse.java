@@ -11,7 +11,7 @@ import cz.vse.adventurefx.logic.items.Item;
  */
 public class CommandUse implements ICommand {
 
-    private static final String NAME = "use";
+    public static final String NAME = "use";
     private GamePlan plan;
     private Backpack backpack;
 

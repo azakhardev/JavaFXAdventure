@@ -11,7 +11,7 @@ import cz.vse.adventurefx.logic.items.Item;
  */
 public class CommandDrop implements ICommand {
 
-    private final static String NAME = "drop";
+    public final static String NAME = "drop";
     private final GamePlan gamePlan;
     private final Backpack backpack;
 
