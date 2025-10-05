@@ -301,12 +301,12 @@ public class GamePlan implements Observable {
         barrack.addItem(needle);
 
         kitchen.setExit(barrack);
+        kitchen.setExit(hallway);
+        kitchen.setExit(storage);
         kitchen.addItem(smallKey);
         kitchen.addProp(pans);
         kitchen.addProp(drawer);
         kitchen.addProp(fridge);
-        kitchen.setExit(storage);
-        kitchen.setExit(hallway);
         kitchen.addObstacle(fuseBox);
 
         storage.setExit(kitchen);
@@ -327,8 +327,8 @@ public class GamePlan implements Observable {
         hallway.addProp(closet);
 
         greenhouse.setExit(hallway);
-        greenhouse.setExit(engineRoom);
         greenhouse.setExit(outpost);
+        greenhouse.setExit(engineRoom);
         greenhouse.addObstacle(stuckDoor);
         greenhouse.addProp(irrigator);
         greenhouse.addProp(pot);

@@ -118,7 +118,7 @@ public class CommandsTest {
         CommandInventory inventoryCommand = new CommandInventory(player);
 
         assertEquals("Command inventory does not take any parameters.", inventoryCommand.executeCommand("extra"));
-        assertEquals("You don't have any items in your backpackYour backpack has capacity of 4", inventoryCommand.executeCommand());
+        assertEquals("You don't have any items in your backpack. Your backpack has capacity of 5", inventoryCommand.executeCommand());
 
         Item screwdriver = new Item("screwdriver", "Useful tool.", 2);
         Item wires = new Item("wires", "Insulated wires.", 1);
@@ -130,7 +130,7 @@ public class CommandsTest {
         assertTrue(result.contains("You have those items in your backpack:"));
         assertTrue(result.contains("screwdriver that takes up 2 space unit."));
         assertTrue(result.contains("wires that takes up 1 space unit."));
-        assertTrue(result.contains("You have 1 free space left in your backpack."));
+        assertTrue(result.contains("You have 2 free space left in your backpack."));
     }
 
     @Test

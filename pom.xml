@@ -65,9 +65,9 @@
                         <id>default-cli</id>
                         <configuration>
                             <mainClass>cz.vse.adventurefx/cz.vse.adventurefx.main.Start</mainClass>
-                            <launcher>${artifactId}</launcher>
-                            <jlinkZipName>${artifactId}-${project.version}</jlinkZipName>
-                            <jlinkImageName>${artifactId}</jlinkImageName>
+                            <launcher>${project.artifactId}</launcher>
+                            <jlinkZipName>${project.artifactId}-${project.version}</jlinkZipName>
+                            <jlinkImageName>${project.artifactId}</jlinkImageName>
                             <noManPages>true</noManPages>
                             <stripDebug>true</stripDebug>
                             <noHeaderFiles>true</noHeaderFiles>

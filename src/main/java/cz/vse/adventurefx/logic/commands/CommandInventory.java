@@ -39,7 +39,7 @@ public class CommandInventory implements ICommand {
         }
 
         if (backpack.getItems().isEmpty()) {
-            return "You don't have any items in your backpack" + "Your backpack has capacity of " + backpack.getCapacity();
+            return "You don't have any items in your backpack. " + "Your backpack has capacity of " + backpack.getCapacity();
         }
 
         StringBuilder storedItems = new StringBuilder("You have those items in your backpack: \n");
