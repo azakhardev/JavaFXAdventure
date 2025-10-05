@@ -1,25 +1,36 @@
 package cz.vse.adventurefx.main;
 
 import cz.vse.adventurefx.logic.IGame;
-import cz.vse.adventurefx.logic.Room;
+import cz.vse.adventurefx.logic.entities.Player;
+import cz.vse.adventurefx.logic.items.Item;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Point2D;
+import javafx.scene.control.Label;
+import javafx.scene.control.ListCell;
+import javafx.scene.control.ListView;
 import javafx.scene.image.ImageView;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class MinimapController {
-
     private IGame game;
 
     @FXML
     private ImageView playerPin;
 
     @FXML
-    private ImageView minimap;
+    private ListView<Item> invenotryPanel;
+
+    private ObservableList<Item> items = FXCollections.observableArrayList();
 
     private Map<String, Point2D> roomsCoordinates = new HashMap<>();
+
+    @FXML
+    private Label inventorySpace;
 
     @FXML
     private void initialize() {
@@ -27,6 +38,7 @@ public class MinimapController {
     }
 
     private void insertCoordinates() {
+        loadInventory();
         roomsCoordinates.put("barrack", new Point2D(36, 80));
         roomsCoordinates.put("kitchen", new Point2D(112, 104));
         roomsCoordinates.put("storage", new Point2D(100, 164));
@@ -43,6 +55,23 @@ public class MinimapController {
         roomsCoordinates.put("administration", new Point2D(250, 256));
     }
 
+    private void loadInventory() {
+        invenotryPanel.setCellFactory(param -> new ListCell<Item>() {
+            @Override
+            protected void updateItem(Item item, boolean empty) {
+                super.updateItem(item, empty);
+                setText(empty || item == null ? null : item.getName() + " (" + item.getVolume() + ")");
+            }
+        });
+
+        items.addAll(Player.getInstance().getBackpack().getItems());
+        invenotryPanel.setItems(items);
+        inventorySpace.setText(String.valueOf(
+                Player.getInstance().getBackpack().getCapacity()
+                        - Player.getInstance().getBackpack().getUsedCapacity()
+        ));
+    }
+
     public void setGame(IGame game) {
         this.game = game;
         updatePlayerPosition();
@@ -53,5 +82,17 @@ public class MinimapController {
 
         playerPin.setLayoutX(point.getX());
         playerPin.setLayoutY(point.getY());
+    }
+
+    @FXML
+    private void useItem(ActionEvent actionEvent) {
+    }
+
+    @FXML
+    private void dropItem(ActionEvent actionEvent) {
+    }
+
+    @FXML
+    private void combineItems(ActionEvent actionEvent) {
     }
 }

@@ -12,6 +12,7 @@ import java.util.List;
 public class Backpack {
     private int capacity;
     private List<Item> items = new ArrayList<>();
+    private Item selectedItem;
 
     /**
      * Konstruktor batohu s danou kapacitou.
@@ -56,6 +57,13 @@ public class Backpack {
         return null;
     }
 
+    public Item getSelectedItem() {
+        return this.selectedItem;
+    }
+
+    public void setSelectedItem(Item item) {
+        this.selectedItem = item;
+    }
     /**
      * Pokusí se uložit předmět do batohu (a zároveň jej odebere z místnosti).
      *
