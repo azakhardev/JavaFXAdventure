@@ -185,7 +185,7 @@ public class GamePlan implements Observable {
         enginePanel.setOnUse(item -> {
             if (item.getName().equals("screwdriver")) {
                 engineRoom.addProp(openedPanel);
-                engineRoom.removeItem(enginePanel.getName());
+                engineRoom.removeProp(enginePanel.getName());
                 return new UseResult("You opened the panel with your screwdriver. What a handy tool!", false);
             }
             return new UseResult("This won't help", false);
