@@ -1,0 +1,36 @@
+name: Build and Release AdventureFX
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Build with Maven
+        run: mvn -B clean javafx:jlink
+
+      - name: Find built artifact
+        run: |
+          echo "Listing target directory:"
+          dir target
+        shell: bash
+
+      - name: Upload ZIP artifact to GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: target/*.zip
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
