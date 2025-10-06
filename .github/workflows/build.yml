@@ -28,9 +28,10 @@ jobs:
           dir target
         shell: bash
 
-      - name: Upload ZIP artifact to GitHub Release
-        uses: softprops/action-gh-release@v2
+      - name: Upload ZIP artifact
+        uses: actions/upload-artifact@v4
         with:
-          files: target/*.zip
+          name: AdventureFX-build
+          path: target/*.zip
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
