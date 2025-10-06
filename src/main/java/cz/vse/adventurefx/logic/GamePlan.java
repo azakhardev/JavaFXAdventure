@@ -128,6 +128,7 @@ public class GamePlan implements Observable {
         Prop panelCables = new Prop("panel_cables", "Exposed cables that are sticking from the wall, sparking from time to time.", item -> {
             if (item.getName().equals("wire_cutters")) {
                 hallway.addItem(cable);
+                hallway.removeItem("panel_cables");
                 return new UseResult("You cut the cables with a quick cut.", false);
             }
             return new UseResult("You can't cut the wires with that thing.", false);
