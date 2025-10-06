@@ -2,8 +2,8 @@ name: Build and Release AdventureFX
 
 on:
   push:
-    tags:
-      - 'v*'
+    branches:
+      - main
 
 jobs:
   build:
@@ -20,7 +20,7 @@ jobs:
           java-version: '17'
 
       - name: Build with Maven
-        run: mvn -B clean javafx:jlink
+        run: mvn -B clean javafx:jpackage
 
       - name: Find built artifact
         run: |
