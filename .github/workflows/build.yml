@@ -20,7 +20,7 @@ jobs:
           java-version: '17'
 
       - name: Build with Maven
-        run: mvn -B clean javafx:jpackage
+        run: mvn -B clean javafx:jlink
 
       - name: Find built artifact
         run: |
